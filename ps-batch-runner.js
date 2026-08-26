@@ -21,11 +21,11 @@ app.bringToFront();
             var combo=task.combinations[i], col=i%columns,row=Math.floor(i/columns),requestedLeft=sourceRect.left+col*(w+gap),requestedTop=sourceRect.top+row*(h+gap);
             app.activeDocument=result;var artboard=i===0?sourceArtboard:duplicateTemplateArtboard(sourceArtboard,result);
             positionArtboard(artboard,requestedLeft,requestedTop);artboard.name=clean(pad(i+1)+"_"+combo.name);
-            var actualRect=readArtboardRect(artboard),variableText=findTemplateGroup(artboard,"可变文字");if(!variableText)throw new Error("画板 "+artboard.name+" 缺少图层组：可变文字");variableText.name="可变文字";
+            var actualRect=readArtboardRect(artboard),needsText=combo.needsText!==false,variableText=needsText?findTemplateGroup(artboard,"可变文字"):null;if(needsText&&!variableText)throw new Error("画板 "+artboard.name+" 已开启文字修改，但缺少图层组：可变文字");if(variableText)variableText.name="可变文字";
             boards.push({artboard:artboard,combo:combo,left:actualRect.left,top:actualRect.top,right:actualRect.right,bottom:actualRect.bottom,templateRoot:artboard,variableText:variableText});
         }
         /* 第二阶段前先逐画板原位替换文字，所有画板都已复制完成，不会互相继承上一组文案。 */
-        for(i=0;i<boards.length;i++)updateTemplateTextLayers(boards[i].variableText,boards[i].combo.text||[],{left:boards[i].left,top:boards[i].top,right:boards[i].right,bottom:boards[i].bottom},boards[i].artboard.name);
+        for(i=0;i<boards.length;i++)if(boards[i].combo.needsText!==false)updateTemplateTextLayers(boards[i].variableText,boards[i].combo.text||[],{left:boards[i].left,top:boards[i].top,right:boards[i].right,bottom:boards[i].bottom},boards[i].artboard.name);
         /* 每个唯一产品只置入一次，之后在同一 PSD 内复制智能对象，避免大型文档反复 app.open/close PNG。 */
         app.activeDocument=result;result.activeLayer=boards[0].artboard;var assetCache=boards[0].artboard.layerSets.add(),placedAssets={};assetCache.name="临时素材缓存_完成后删除";assetCache.visible=true;
         /* 第二阶段：逐画板建立组、排版产品、生成投影和蒙版。 */
