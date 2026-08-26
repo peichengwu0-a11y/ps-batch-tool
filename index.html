@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>商品图批量画板系统</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="intent-preview.css"><style>.section-head{gap:12px}.source-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}.source-actions button{padding:7px 9px}.source-actions button:disabled{opacity:.45;cursor:not-allowed}.folder-status{margin-top:10px;padding:7px 9px;border-radius:6px;background:#f3f6fa;color:#6b7480;font-size:12px}.folder-status.connected{background:#edf8f2;color:#18794e}.assets{margin-top:12px}</style></head>
+<body>
+<header><div class="brand"><strong>商品图批量画板</strong><span>模板区域与产品搭配任务生成器</span></div><nav><button class="tab active" data-page="library">1 素材库</button><button class="tab" data-page="template">2 模板区域</button><button class="tab" data-page="batch">3 批量搭配</button></nav><button id="exportBtn" class="primary">导出 Photoshop 任务</button></header>
+
+<main id="libraryPage" class="page">
+  <div class="title"><div><h1>主品与赠品素材库</h1><p>背景、Logo、Icon 和赠品版保留在 PSD 模板中；文字由 Excel 填写，产品由网站自动排列。</p></div></div>
+  <div class="library-grid">
+    <section class="asset-section"><div class="section-head"><div><h2>主品库</h2><p>每组搭配至少选择一个主品</p></div><div class="source-actions"><button id="mainFolder">选择主品文件夹</button><button id="mainRefresh" disabled>刷新文件夹</button><label class="upload"><input id="mainInput" type="file" multiple accept="image/png,image/jpeg,image/webp">添加文件</label></div></div><div id="mainFolderName" class="folder-status">尚未连接本地文件夹</div><div id="mainAssets" class="assets"></div></section>
+    <section class="asset-section"><div class="section-head"><div><h2>赠品库</h2><p>每组可选择任意数量赠品</p></div><div class="source-actions"><button id="giftFolder">选择赠品文件夹</button><button id="giftRefresh" disabled>刷新文件夹</button><label class="upload"><input id="giftInput" type="file" multiple accept="image/png,image/jpeg,image/webp">添加文件</label></div></div><div id="giftFolderName" class="folder-status">尚未连接本地文件夹</div><div id="giftAssets" class="assets"></div></section>
+  </div>
+</main>
+
+<main id="templatePage" class="page" hidden>
+  <aside class="template-sidebar">
+    <h2>模板文件</h2>
+    <label class="filebox"><span>模板预览图</span><input id="previewInput" type="file" accept="image/png,image/jpeg,image/webp"><b id="previewName">未选择</b></label>
+    <label class="filebox"><span>原始 PSD / PSB</span><input id="psdInput" type="file" accept=".psd,.psb"><b id="psdName">未选择</b></label>
+    <label>模板名称<input id="templateName" value="商品图模板"></label>
+    <div class="rule-card main-rule"><h3>主品排版</h3><label>区域内边距<input id="mainPadding" type="number" value="20"></label><label>统一间距比例<input id="mainGap" type="number" value="2.5" step="0.5"></label><label>排列方式<select id="mainLayout"><option value="height">从高到低，底部对齐</option><option value="equal">横向等距，底部对齐</option></select></label></div>
+    <div class="rule-card gift-rule"><h3>赠品排版</h3><label>区域内边距<input id="giftPadding" type="number" value="18"></label><label>统一间距比例<input id="giftGap" type="number" value="2.5" step="0.5"></label><label class="check"><input id="giftStack" type="checkbox" checked>小赠品允许上下组合</label></div>
+  </aside>
+  <section class="template-stage">
+    <div class="toolbar"><div class="seg"><button id="selectTool" class="active">选择</button><button id="rectTool">矩形区域</button><button id="polyTool">多边形套索</button></div><label>绘制类型<select id="drawType"><option value="main">主品排列区域</option><option value="gift">赠品排列区域</option><option value="mask">整体产品蒙版</option></select></label><button id="clearZones">清空区域</button><span id="hint">先绘制两个排列区域，再绘制整体产品蒙版</span></div>
+    <div class="canvas-wrap"><canvas id="canvas" width="900" height="900"></canvas></div>
+    <div class="canvas-status"><span id="sizeLabel">900 × 900 px</span><span>红色：主品排列　蓝色：赠品排列　绿色：整体产品蒙版</span></div>
+  </section>
+</main>
+
+<main id="batchPage" class="page" hidden>
+  <div class="title"><div><h1>批量产品搭配</h1><p>可从 Excel 自动填写文字并匹配主品、赠品；每组搭配生成一个 Photoshop 画板。</p></div><div class="batch-title-actions"><label class="upload"><input id="excelInput" type="file" accept=".xlsx,.xls,.csv">导入 Excel</label><button id="addCombo" class="primary">添加另一组搭配</button></div></div>
+  <div class="batch-workspace">
+    <div class="batch-content">
+      <section class="batch-settings"><label>每行画板数量<input id="artboardColumns" type="number" min="1" max="10" value="4"></label><label>画板间距（px）<input id="artboardGap" type="number" min="0" value="100"></label><label>任务名称<input id="taskName" value="批量商品图任务"></label></section>
+      <div id="combos" class="combos"></div>
+    </div>
+    <aside id="intentPreview" class="intent-preview" aria-label="排版意图预览">
+      <div class="intent-head"><div><strong>排版意图预览</strong><span id="intentComboName">组合 01</span></div><button id="resetIntent" type="button">重新排版</button></div>
+      <div class="intent-tools"><button data-align="top" title="顶部对齐">顶对齐</button><button data-align="bottom" title="底部对齐">底对齐</button><button data-align="left" title="左侧对齐">左对齐</button><button data-align="right" title="右侧对齐">右对齐</button><button data-align="space-x" title="水平等距">横等距</button><button data-align="space-y" title="垂直等距">纵等距</button><button data-align="same-size" title="保持比例，统一到所选最大产品的高度">统一大小</button><button data-align="largest" title="以所选最大产品为基准统一底部">对齐最大项</button><button id="rotate45" type="button" title="所选产品顺时针旋转 45°">顺时针 45°</button></div>
+      <section class="sun-controls" aria-label="2.5D 太阳光投影">
+        <div class="sun-head"><strong>产品投影</strong><label>投影模式 <select id="shadowMode"><option value="giftbox">礼盒投影</option><option value="sun">太阳光投影</option></select></label></div>
+        <div id="giftboxOptions" class="giftbox-options">
+          <div class="shadow-presets" aria-label="礼盒投影快速预设"><span>快速预设</span><button type="button" data-giftbox-preset="giftbox-1">礼盒 1</button><button type="button" data-giftbox-preset="giftbox-2">礼盒 2</button></div>
+          <div class="giftbox-toolbar"><label><input id="giftboxLinked" type="checkbox"> 主品与赠品使用相同参数</label><button id="resetGiftbox" type="button">恢复礼盒预设</button></div>
+          <div class="giftbox-columns">
+            <fieldset class="giftbox-card" data-shadow-role="main"><legend>主品投影</legend>
+              <label>不透明度 <output id="giftMainOpacityValue">41%</output><input id="giftMainOpacity" type="range" min="0" max="100" value="41"></label>
+              <label>角度 <output id="giftMainAngleValue">140°</output><input id="giftMainAngle" type="range" min="0" max="359" value="140"></label>
+              <label>距离 <output id="giftMainDistanceValue">14 px</output><input id="giftMainDistance" type="range" min="0" max="80" value="14"></label>
+              <label>扩展 <output id="giftMainSpreadValue">14%</output><input id="giftMainSpread" type="range" min="0" max="100" value="14"></label>
+              <label>大小 <output id="giftMainSizeValue">12 px</output><input id="giftMainSize" type="range" min="0" max="80" value="12"></label>
+              <label class="giftbox-color">颜色 <input id="giftMainColor" type="color" value="#000000"></label>
+            </fieldset>
+            <fieldset class="giftbox-card" data-shadow-role="gift"><legend>赠品投影</legend>
+              <label>不透明度 <output id="giftGiftOpacityValue">34%</output><input id="giftGiftOpacity" type="range" min="0" max="100" value="34"></label>
+              <label>角度 <output id="giftGiftAngleValue">140°</output><input id="giftGiftAngle" type="range" min="0" max="359" value="140"></label>
+              <label>距离 <output id="giftGiftDistanceValue">9 px</output><input id="giftGiftDistance" type="range" min="0" max="80" value="9"></label>
+              <label>扩展 <output id="giftGiftSpreadValue">18%</output><input id="giftGiftSpread" type="range" min="0" max="100" value="18"></label>
+              <label>大小 <output id="giftGiftSizeValue">8 px</output><input id="giftGiftSize" type="range" min="0" max="80" value="8"></label>
+              <label class="giftbox-color">颜色 <input id="giftGiftColor" type="color" value="#000000"></label>
+            </fieldset>
+          </div>
+          <p class="shadow-note">网页预览为近似效果，导出后 Photoshop 使用这里的精确图层样式数值。</p>
+        </div>
+        <div id="sunOptions" class="sun-options" hidden>
+          <div class="shadow-presets sun-preset-row" aria-label="太阳光投影快速预设"><span>快速预设</span><button type="button" data-sun-preset="sun-1">太阳 1</button><button type="button" data-sun-preset="sun-2">太阳 2</button><button type="button" data-sun-preset="sun-3">太阳 3</button><button type="button" data-sun-preset="sun-4">太阳 4</button></div>
+          <div id="sunPad" class="sun-pad" title="拖动太阳调整方向与高度"><span class="sun-horizon"></span><i id="sunDot"></i><b>太阳</b></div>
+          <div class="sun-fields">
+            <label>方向 <output id="sunAzimuthValue">135°</output></label>
+            <label>太阳高度 <output id="sunElevationValue">35°</output><input id="sunElevation" type="range" min="12" max="78" value="35"></label>
+            <label>投影深度 <output id="sunOpacityValue">35%</output><input id="sunOpacity" type="range" min="8" max="70" value="35"></label>
+            <label>光源大小 <output id="sunSoftnessValue">35%</output><input id="sunSoftness" type="range" min="0" max="100" value="35"></label>
+            <label title="按画布短边比例将接触阴影向产品内部上移，并自动受产品高度和画布尺寸限制">接触阴影贴合 <output id="contactLiftValue">1.6%</output><input id="contactLift" type="range" min="0" max="3" step="0.1" value="1.6"></label>
+            <label>选中产品长度修正 <output id="sunCorrectionValue">100%</output><input id="sunCorrection" type="range" min="20" max="180" value="100"></label>
+          </div>
+        </div>
+      </section>
+      <div class="intent-canvas-wrap"><canvas id="intentCanvas" width="720" height="720"></canvas><div id="intentEmpty" class="intent-empty">选择产品后显示剪影</div></div>
+      <div id="intentTabs" class="intent-tabs"></div>
+      <div class="intent-legend"><span><i class="intent-main"></i>主品</span><span><i class="intent-gift"></i>赠品</span><span>Ctrl 单击或拖框多选</span><span>拖动左上／右下方形手柄缩放</span><span>拖动圆形手柄旋转</span><span>Ctrl+Z 撤回</span><span>数字对应排版优先级</span></div>
+      <div id="intentResize" class="intent-resize" title="拖动改变预览区域大小"></div>
+    </aside>
+  </div>
+</main>
+
+<dialog id="exportDialog"><form method="dialog"><div class="dialog-head"><div><h2>导出 Photoshop 多画板任务</h2><p>包含执行器、任务数据、模板和本次使用的全部产品素材</p></div><button value="cancel">关闭</button></div><div id="exportCheck" class="export-check"></div><div class="dialog-actions"><button id="downloadTaskJson" type="button">下载 task.json</button><button id="downloadJsx" type="button">下载执行器.jsx</button><button id="writeTask" type="button" class="primary">导出完整任务文件夹</button></div></form></dialog>
+<dialog id="excelDialog" class="excel-dialog"><form method="dialog"><div class="dialog-head"><div><h2>Excel 导入检查</h2><p id="excelSummary">正在读取表格…</p></div><button value="cancel">关闭</button></div><div id="excelIssues" class="excel-issues"></div><div class="excel-table-wrap"><table><thead><tr><th>搭配</th><th>文字</th><th>主品</th><th>赠品</th><th>状态</th></tr></thead><tbody id="excelRows"></tbody></table></div><div class="dialog-actions"><button id="excelAppend" type="button">追加到现有搭配</button><button id="excelReplace" type="button" class="primary">替换现有搭配</button></div></form></dialog>
+<div id="toast"></div><script src="vendor/xlsx.full.min.js"></script><script src="ps-batch-runner.js"></script><script src="excel-import.js"></script><script src="app.js"></script></body></html>
