@@ -4,30 +4,35 @@
 
 <main id="libraryPage" class="page">
   <div class="title"><div><h1>主品与赠品素材库</h1><p>背景、Logo、Icon 和赠品版保留在 PSD 模板中；文字由 Excel 填写，产品由网站自动排列。</p></div></div>
+  <section class="library-source"><div><h2>商品素材库</h2><p>根目录第一层使用“主品”和“赠品”，下面可以继续建立任意分类文件夹。</p></div><div class="source-actions"><button id="productLibraryFolder" class="primary">选择商品素材库</button><button id="productLibraryRefresh" disabled>刷新素材库</button></div><div id="productLibraryStatus" class="folder-status">尚未连接商品素材库</div></section>
   <div class="library-grid">
-    <section class="asset-section"><div class="section-head"><div><h2>主品库</h2><p>每组搭配至少选择一个主品</p></div><div class="source-actions"><button id="mainFolder">选择主品文件夹</button><button id="mainRefresh" disabled>刷新文件夹</button><label class="upload"><input id="mainInput" type="file" multiple accept="image/png,image/jpeg,image/webp">添加文件</label></div></div><div id="mainFolderName" class="folder-status">尚未连接本地文件夹</div><div id="mainAssets" class="assets"></div></section>
-    <section class="asset-section"><div class="section-head"><div><h2>赠品库</h2><p>每组可选择任意数量赠品</p></div><div class="source-actions"><button id="giftFolder">选择赠品文件夹</button><button id="giftRefresh" disabled>刷新文件夹</button><label class="upload"><input id="giftInput" type="file" multiple accept="image/png,image/jpeg,image/webp">添加文件</label></div></div><div id="giftFolderName" class="folder-status">尚未连接本地文件夹</div><div id="giftAssets" class="assets"></div></section>
+    <section id="libraryMainPanel" class="asset-section"><div class="section-head"><div><h2>主品库</h2><p>每组搭配至少选择一个主品</p></div><label class="upload secondary"><input id="mainInput" type="file" multiple accept="image/png,image/jpeg,image/webp">补充单个文件</label></div><div id="mainCategories" class="category-browser"></div><div id="mainAssets" class="assets"></div></section>
+    <div id="libraryResize" class="library-splitter" role="separator" aria-orientation="vertical" aria-label="拖动调整主品库和赠品库宽度" title="左右拖动调整素材库宽度"><i></i></div>
+    <section id="libraryGiftPanel" class="asset-section"><div class="section-head"><div><h2>赠品库</h2><p>每组可选择任意数量赠品</p></div><label class="upload secondary"><input id="giftInput" type="file" multiple accept="image/png,image/jpeg,image/webp">补充单个文件</label></div><div id="giftCategories" class="category-browser"></div><div id="giftAssets" class="assets"></div></section>
   </div>
 </main>
 
 <main id="templatePage" class="page" hidden>
   <aside class="template-sidebar">
     <h2>模板文件</h2>
+    <div class="template-library-box"><div class="source-actions"><button id="templateLibraryFolder" class="primary">选择背景模板库</button><button id="templateLibraryRefresh" disabled>刷新</button></div><div id="templateLibraryStatus" class="folder-status">可一次读取预览图与同名 PSD/PSB</div><label>选择已配对模板<select id="templatePairSelect"><option value="">尚未读取模板库</option></select></label><div id="templatePairInfo" class="pair-info"></div></div>
+    <p class="fallback-title">单文件选择（备用）</p>
     <label class="filebox"><span>模板预览图</span><input id="previewInput" type="file" accept="image/png,image/jpeg,image/webp"><b id="previewName">未选择</b></label>
     <label class="filebox"><span>原始 PSD / PSB</span><input id="psdInput" type="file" accept=".psd,.psb"><b id="psdName">未选择</b></label>
+    <div class="psd-text-scan"><div><strong>可变文字识别</strong><button id="rescanPsdText" type="button" disabled>重新识别</button></div><p id="psdTextStatus">选择 PSD 后自动读取“可变文字”组</p><div id="psdTextLayers" class="psd-text-layers"></div></div>
     <label>模板名称<input id="templateName" value="商品图模板"></label>
     <div class="rule-card main-rule"><h3>主品排版</h3><label>区域内边距<input id="mainPadding" type="number" value="20"></label><label>统一间距比例<input id="mainGap" type="number" value="2.5" step="0.5"></label><label>排列方式<select id="mainLayout"><option value="height">从高到低，底部对齐</option><option value="equal">横向等距，底部对齐</option></select></label></div>
     <div class="rule-card gift-rule"><h3>赠品排版</h3><label>区域内边距<input id="giftPadding" type="number" value="18"></label><label>统一间距比例<input id="giftGap" type="number" value="2.5" step="0.5"></label><label class="check"><input id="giftStack" type="checkbox" checked>小赠品允许上下组合</label></div>
   </aside>
   <section class="template-stage">
-    <div class="toolbar"><div class="seg"><button id="selectTool" class="active">选择</button><button id="rectTool">矩形区域</button><button id="polyTool">多边形套索</button></div><label>绘制类型<select id="drawType"><option value="main">主品排列区域</option><option value="gift">赠品排列区域</option><option value="mask">整体产品蒙版</option></select></label><button id="clearZones">清空区域</button><span id="hint">先绘制两个排列区域，再绘制整体产品蒙版</span></div>
+    <div class="toolbar"><div class="seg"><button id="selectTool" class="active">选择</button><button id="rectTool">矩形区域</button><button id="polyTool">多边形套索</button></div><label>绘制类型<select id="drawType"><option value="main">主品排列区域</option><option value="gift">赠品排列区域</option><option value="mask">整体产品蒙版</option></select></label><div class="zone-color-controls" aria-label="区域辅助线颜色"><label title="主品排列区域颜色"><i class="zone-dot main"></i>主品<input id="mainZoneColor" type="color" value="#7cfc00"></label><label title="赠品排列区域颜色"><i class="zone-dot gift"></i>赠品<input id="giftZoneColor" type="color" value="#00bfff"></label><label title="整体产品蒙版颜色"><i class="zone-dot mask"></i>蒙版<input id="maskZoneColor" type="color" value="#ffd400"></label><label class="contrast-toggle" title="为彩色虚线增加黑白双层轮廓，在深色和浅色背景上都保持清晰"><input id="zoneHighContrast" type="checkbox" checked>高对比描边</label></div><button id="clearZones">清空区域</button><span id="hint">先绘制两个排列区域，再绘制整体产品蒙版</span></div>
     <div class="canvas-wrap"><canvas id="canvas" width="900" height="900"></canvas></div>
     <div class="canvas-status"><span id="sizeLabel">900 × 900 px</span><span>红色：主品排列　蓝色：赠品排列　绿色：整体产品蒙版</span></div>
   </section>
 </main>
 
 <main id="batchPage" class="page" hidden>
-  <div class="title"><div><h1>批量产品搭配</h1><p>可从 Excel 自动填写文字并匹配主品、赠品；每组搭配生成一个 Photoshop 画板。</p></div><div class="batch-title-actions"><label class="upload"><input id="excelInput" type="file" accept=".xlsx,.xls,.csv">导入 Excel</label><button id="addCombo" class="primary">添加另一组搭配</button></div></div>
+  <div class="title"><div><h1>批量产品搭配</h1><p>可从 Excel 自动填写文字并匹配主品、赠品；每组搭配生成一个 Photoshop 画板。</p></div><div class="batch-title-actions"><label class="upload planner-upload"><input id="plannerExcelInput" type="file" accept=".xlsx,.xls">转换策划表</label><label class="upload"><input id="excelInput" type="file" accept=".xlsx,.xls,.csv">导入标准表</label><button id="addCombo" class="primary">添加另一组搭配</button></div></div>
   <div class="batch-workspace">
     <div class="batch-content">
       <section class="batch-settings"><label>每行画板数量<input id="artboardColumns" type="number" min="1" max="10" value="4"></label><label>画板间距（px）<input id="artboardGap" type="number" min="0" value="100"></label><label>任务名称<input id="taskName" value="批量商品图任务"></label><label class="global-text-toggle"><input id="needsTextAll" type="checkbox" checked><span><b>需要修改文字</b><small>应用到全部组合</small></span></label></section>
@@ -76,14 +81,15 @@
           </div>
         </div>
       </section>
-      <div class="intent-canvas-wrap"><canvas id="intentCanvas" width="720" height="720"></canvas><div id="intentEmpty" class="intent-empty">选择产品后显示剪影</div></div>
+      <div class="intent-canvas-wrap"><canvas id="intentCanvas" width="720" height="720"></canvas><div id="intentEmpty" class="intent-empty">选择产品后显示背景与产品预览</div></div>
       <div id="intentTabs" class="intent-tabs"></div>
-      <div class="intent-legend"><span><i class="intent-main"></i>主品</span><span><i class="intent-gift"></i>赠品</span><span>Ctrl 单击或拖框多选</span><span>拖动左上／右下方形手柄缩放</span><span>拖动圆形手柄旋转</span><span>Ctrl+Z 撤回</span><span>数字对应排版优先级</span></div>
-      <div id="intentResize" class="intent-resize" title="拖动改变预览区域大小"></div>
+      <div class="intent-legend"><span><i class="intent-main"></i>主品</span><span><i class="intent-gift"></i>赠品</span><span>Ctrl 单击或拖框多选</span><span>拖动左上／右下方形手柄缩放</span><span>拖动圆形手柄旋转</span><span>Ctrl+Z 全局撤回</span><span>新增产品放在右上角，不重排已有产品</span><span>数字对应排版优先级</span></div>
     </aside>
+    <div id="intentResize" class="batch-splitter" role="separator" aria-orientation="vertical" aria-label="拖动调整左右区域宽度" title="左右拖动调整两栏宽度"><i></i></div>
   </div>
 </main>
 
 <dialog id="exportDialog"><form method="dialog"><div class="dialog-head"><div><h2>导出 Photoshop 多画板任务</h2><p>包含执行器、任务数据、模板和本次使用的全部产品素材</p></div><button value="cancel">关闭</button></div><div id="exportCheck" class="export-check"></div><div class="dialog-actions"><button id="downloadTaskJson" type="button">下载 task.json</button><button id="downloadJsx" type="button">下载执行器.jsx</button><button id="writeTask" type="button" class="primary">导出完整任务文件夹</button></div></form></dialog>
 <dialog id="excelDialog" class="excel-dialog"><form method="dialog"><div class="dialog-head"><div><h2>Excel 导入检查</h2><p id="excelSummary">正在读取表格…</p></div><button value="cancel">关闭</button></div><div id="excelIssues" class="excel-issues"></div><div class="excel-table-wrap"><table><thead><tr><th>搭配</th><th>文字</th><th>主品</th><th>赠品</th><th>状态</th></tr></thead><tbody id="excelRows"></tbody></table></div><div class="dialog-actions"><button id="excelAppend" type="button">追加到现有搭配</button><button id="excelReplace" type="button" class="primary">替换现有搭配</button></div></form></dialog>
-<div id="toast"></div><script src="vendor/xlsx.full.min.js"></script><script src="ps-batch-runner.js"></script><script src="excel-import.js"></script><script src="app.js"></script></body></html>
+<dialog id="plannerDialog" class="planner-dialog"><form method="dialog"><div class="dialog-head"><div><h2>策划表转换检查</h2><p id="plannerSummary">正在识别策划表…</p></div><button value="cancel">关闭</button></div><div class="planner-rule-note"><strong>文字与产品双通道</strong><span>文字列使用当前 PSD“可变文字”图层名作表头，并原样复制策划内容；主品、赠品另行匹配素材编号与数量，互不覆盖。</span></div><div id="plannerMappings" class="planner-mappings"></div><div id="plannerIssues" class="planner-issues"></div><div class="planner-table-wrap"><table><thead><tr><th>编号/任务</th><th>策划主品名称（原文）</th><th>策划赠品机制（原文）</th><th>PSD文字图层与原文</th><th>主品/赠品素材编号</th><th>状态</th></tr></thead><tbody id="plannerRows"></tbody></table></div><div class="dialog-actions"><button id="plannerExport" type="button" class="primary">导出标准表格</button></div></form></dialog>
+<div id="toast"></div><script src="vendor/xlsx.full.min.js"></script><script src="vendor/ag-psd.bundle.js"></script><script src="ps-batch-runner.js"></script><script src="excel-import.js"></script><script src="app.js"></script></body></html>
