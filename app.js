@@ -223,6 +223,8 @@ function canvasAlphaBounds(cv){const g=cv.getContext("2d",{willReadFrequently:tr
 function canvasBlob(cv){return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error("无法生成投影 PNG")),"image/png"))}
 function renderIntentPreview(){
   const cv=$("intentCanvas");if(!cv)return;
+  const sourceW=Math.max(1,Number(state.canvasW)||1),sourceH=Math.max(1,Number(state.canvasH)||1),sourceRatio=sourceW/sourceH,maxPreviewSide=900,previewW=sourceRatio>=1?maxPreviewSide:Math.max(1,Math.round(maxPreviewSide*sourceRatio)),previewH=sourceRatio>=1?Math.max(1,Math.round(maxPreviewSide/sourceRatio)):maxPreviewSide;
+  if(cv.width!==previewW||cv.height!==previewH){cv.width=previewW;cv.height=previewH}cv.style.setProperty("--intent-aspect",`${sourceW}/${sourceH}`);
   const g=cv.getContext("2d"),c=activeCombo(),tabs=$("intentTabs"),empty=$("intentEmpty");
   tabs.innerHTML=state.combos.map((x,i)=>`<button data-combo="${x.id}" class="${x.id===state.activeComboId?"active":""}">${String(i+1).padStart(2,"0")}</button>`).join("");
   tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{state.activeComboId=b.dataset.combo;renderCombos()});
