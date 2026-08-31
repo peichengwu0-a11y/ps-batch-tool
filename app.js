@@ -4,6 +4,7 @@ const state={page:"library",assets:{main:[],gift:[]},folders:{products:null,temp
 function init(){loadCustomTemplates();loadCustomShadowTemplates();loadZoneDisplaySettings();bind();renderLayoutPresetOptions();renderShadowTemplateOptions();addCombo();renderAssets();renderCombos();syncZoneDisplayControls();draw();restoreFolders()}
 function bind(){
   document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+  $("libraryDone").onclick=()=>{showPage("template");window.scrollTo({top:0,behavior:"smooth"})};$("templateDone").onclick=()=>{showPage("batch");window.scrollTo({top:0,behavior:"smooth"})};
   $("mainInput").onchange=e=>addAssets("main",[...e.target.files]);$("giftInput").onchange=e=>addAssets("gift",[...e.target.files]);
   $("productLibraryFolder").onclick=chooseProductLibrary;$("productLibraryRefresh").onclick=refreshProductLibrary;
   $("templateLibraryFolder").onclick=chooseTemplateLibrary;$("templateLibraryRefresh").onclick=refreshTemplateLibrary;$("templatePairSelect").onchange=e=>selectTemplatePair(e.target.value);

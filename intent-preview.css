@@ -1,3 +1,4 @@
+@import url("step-navigation.css");
 #batchPage{width:100%;max-width:none;margin:0;padding:12px;overflow-x:clip}
 #batchPage>.title{max-width:none;margin:0 0 12px}
 #libraryPage{width:100%;max-width:none;margin:0;padding:12px;overflow-x:clip}
