@@ -15,7 +15,7 @@
 <main id="templatePage" class="page" hidden>
   <aside class="template-sidebar">
     <h2>模板文件</h2>
-    <div class="template-library-box"><div class="source-actions"><button id="templateLibraryFolder" class="primary">选择背景模板库</button><button id="templateLibraryRefresh" disabled>刷新</button></div><div id="templateLibraryStatus" class="folder-status">可一次读取预览图与同名 PSD/PSB</div><label>选择已配对模板<select id="templatePairSelect"><option value="">尚未读取模板库</option></select></label><div id="templatePairInfo" class="pair-info"></div></div>
+    <div class="template-library-box"><div class="source-actions"><button id="templateLibraryFolder" class="primary">选择背景模板库</button><button id="templateLibraryRefresh" disabled>刷新</button></div><div id="templateLibraryStatus" class="folder-status">可一次读取预览图与同名 PSD/PSB</div><div class="template-pair-heading"><strong>背景模板预览</strong><span>点击缩略图载入</span></div><div id="templatePairGrid" class="template-pair-grid"><div class="template-pair-empty">读取模板库后显示预览小图</div></div><label class="template-pair-select-fallback">选择已配对模板<select id="templatePairSelect"><option value="">尚未读取模板库</option></select></label><div id="templatePairInfo" class="pair-info"></div></div>
     <p class="fallback-title">单文件选择（备用）</p>
     <label class="filebox"><span>模板预览图</span><input id="previewInput" type="file" accept="image/png,image/jpeg,image/webp"><b id="previewName">未选择</b></label>
     <label class="filebox"><span>原始 PSD / PSB</span><input id="psdInput" type="file" accept=".psd,.psb"><b id="psdName">未选择</b></label>
@@ -36,6 +36,7 @@
   <div class="batch-workspace">
     <div class="batch-content">
       <section class="batch-settings"><label>每行画板数量<input id="artboardColumns" type="number" min="1" max="10" value="4"></label><label>画板间距（px）<input id="artboardGap" type="number" min="0" value="100"></label><label>任务名称<input id="taskName" value="批量商品图任务"></label><label class="global-text-toggle"><input id="needsTextAll" type="checkbox" checked><span><b>需要修改文字</b><small>应用到全部组合</small></span></label></section>
+      <nav id="comboSwitcher" class="combo-switcher" aria-label="切换当前搭配组合"></nav>
       <div id="combos" class="combos"></div>
     </div>
     <aside id="intentPreview" class="intent-preview" aria-label="排版意图预览">
