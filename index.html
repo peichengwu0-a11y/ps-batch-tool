@@ -32,11 +32,11 @@
 </main>
 
 <main id="batchPage" class="page" hidden>
-  <div class="title"><div><h1>批量产品搭配</h1><p>可从 Excel 自动填写文字并匹配主品、赠品；每组搭配生成一个 Photoshop 画板。</p></div><div class="batch-title-actions"><label class="upload planner-upload"><input id="plannerExcelInput" type="file" accept=".xlsx,.xls">转换策划表</label><label class="upload"><input id="excelInput" type="file" accept=".xlsx,.xls,.csv">导入标准表</label><button id="addCombo" class="primary">添加另一组搭配</button></div></div>
+  <div class="title"><div><h1>批量产品搭配</h1><p>可从 Excel 自动填写文字并匹配主品、赠品；每组搭配生成一个 Photoshop 画板。</p></div><div class="batch-title-actions"><label class="upload planner-upload"><input id="plannerExcelInput" type="file" accept=".xlsx,.xls">转换策划表</label><label class="upload"><input id="excelInput" type="file" accept=".xlsx,.xls,.csv">导入标准表</label></div></div>
   <div class="batch-workspace">
     <div class="batch-content">
       <section class="batch-settings"><label>每行画板数量<input id="artboardColumns" type="number" min="1" max="10" value="4"></label><label>画板间距（px）<input id="artboardGap" type="number" min="0" value="100"></label><label>任务名称<input id="taskName" value="批量商品图任务"></label><label class="global-text-toggle"><input id="needsTextAll" type="checkbox" checked><span><b>需要修改文字</b><small>应用到全部组合</small></span></label></section>
-      <nav id="comboSwitcher" class="combo-switcher" aria-label="切换当前搭配组合"></nav>
+      <nav id="comboSwitcher" class="combo-switcher" aria-label="切换当前搭配组合"><button id="addCombo" class="primary" type="button">添加另一组搭配</button></nav>
       <div id="combos" class="combos"></div>
     </div>
     <aside id="intentPreview" class="intent-preview" aria-label="排版意图预览">
@@ -45,6 +45,7 @@
       <div class="intent-tools"><button data-align="top" title="顶部对齐">顶对齐</button><button data-align="bottom" title="底部对齐">底对齐</button><button data-align="left" title="左侧对齐">左对齐</button><button data-align="right" title="右侧对齐">右对齐</button><button data-align="space-x" title="水平等距">横等距</button><button data-align="space-y" title="垂直等距">纵等距</button><button data-align="same-size" title="保持比例，统一到所选最大产品的高度">统一大小</button><button data-align="largest" title="以所选最大产品为基准统一底部">对齐最大项</button><button id="rotate45" type="button" title="所选产品顺时针旋转 45°">顺时针 45°</button></div>
       <section class="sun-controls" aria-label="2.5D 太阳光投影">
         <div class="sun-head"><strong>产品投影</strong><label>投影模式 <select id="shadowMode"><option value="giftbox">礼盒投影</option><option value="sun">太阳光投影</option></select></label></div>
+        <button id="applyShadowToAll" class="shadow-apply-all" type="button" title="统一当前投影模式与参数，保留各产品独立长度修正">统一投影到全部画板</button>
         <div class="shadow-template-bar"><select id="shadowTemplateSelect" aria-label="用户投影模板"><option value="">我的投影模板</option></select><button id="applyShadowTemplate" type="button">应用</button><button id="saveShadowTemplate" type="button">保存</button><button id="renameShadowTemplate" type="button">重命名</button><button id="deleteShadowTemplate" type="button">删除</button><button id="importShadowTemplate" type="button">导入</button><button id="exportShadowTemplate" type="button">导出</button><input id="shadowTemplateFile" type="file" accept=".json,application/json" hidden></div>
         <div id="giftboxOptions" class="giftbox-options">
           <div class="shadow-presets" aria-label="礼盒投影快速预设"><span>快速预设</span><button type="button" data-giftbox-preset="giftbox-1">礼盒 1</button><button type="button" data-giftbox-preset="giftbox-2">礼盒 2</button></div>

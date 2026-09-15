@@ -1,5 +1,8 @@
 @import url("step-navigation.css");
 @import url("ui-refresh.css");
+.combo-switcher #addCombo{display:block;flex:0 0 auto;min-width:0;margin-left:auto;padding:8px 12px;white-space:nowrap;text-align:center;background:var(--blue);border-color:var(--blue);color:#fff}
+.order-item .order-delete{margin:0;width:30px;height:30px;display:grid;place-items:center;color:#c62a2f;border-color:#f0c9cf;padding:4px}
+.shadow-apply-all{width:100%;margin-top:8px;color:#1d4ed8;border-color:#b7c8fa;background:#eef4ff}
 .draw-type-options{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
 .draw-type-options>span{margin-right:3px;color:var(--muted)}
 .toolbar .draw-type-options label{position:relative;display:block;cursor:pointer}
@@ -62,7 +65,7 @@
 .intent-tabs{display:none!important}
 .combos{width:100%;align-content:start}
 .order-list{flex-wrap:wrap;overflow-x:visible}
-.order-item{flex:1 1 300px;max-width:420px}
+.order-item{flex:1 1 340px;max-width:420px;min-width:0;grid-template-columns:22px 46px minmax(0,1fr) 38px 30px 30px 30px}
 .combo-product-panel>.combo-body{align-items:start}
 .picker-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr));align-content:start}
 .picker-categories{display:flex;flex-wrap:wrap;gap:8px!important;padding:10px!important;min-height:56px;align-items:center;overflow:visible!important;scrollbar-gutter:auto}
