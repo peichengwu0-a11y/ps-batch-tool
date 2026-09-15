@@ -1,0 +1,60 @@
+/* iOS-inspired web appearance. Keep workspace geometry and semantic canvas colors. */
+:root{--bg:#f5f5f7;--panel:#fff;--panel-subtle:#fafafa;--line:#e5e5e9;--line-strong:#b9b9c0;--text:#242426;--muted:#707078;--blue:#c92c3b;--blue-soft:#fff0f1;--red:#c92c3b;--radius:16px;--control-radius:9px;--shadow:0 2px 12px rgba(20,20,30,.035)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);letter-spacing:0}
+body header{background:rgba(255,255,255,.94);color:var(--text);border-bottom:1px solid var(--line);box-shadow:0 1px 8px #00000004;backdrop-filter:blur(16px)}
+body .brand span{color:var(--muted)}
+body nav{height:40px;align-self:center;box-sizing:border-box;padding:3px;background:#f0f0f3;border-radius:12px;gap:3px}
+body .tab{color:#606068;border-radius:9px;height:34px}
+body .tab:hover{color:var(--text);background:#e8e8ed}
+body .tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 5px #00000012}
+body button.primary,body header>.primary,body .step-done,body .combo-switcher #addCombo{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:none}
+body button.primary:hover,body header>.primary:hover,body .step-done:hover,body .combo-switcher #addCombo:hover{background:#ae2230;border-color:#ae2230;color:#fff}
+body #exportBtn{background:#171717;border-color:#171717;color:#fff}
+body #exportBtn:hover{background:#333;border-color:#333;color:#fff}
+body button{transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .12s ease;cursor:pointer}
+body button:not(:disabled):active{transform:scale(.97)}
+body button:disabled{cursor:not-allowed;transform:none}
+body button:focus-visible,body input:focus-visible,body select:focus-visible,body textarea:focus-visible,body summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px;box-shadow:0 0 0 4px #c92c3b12}
+body input[type=checkbox],body input[type=radio],body input[type=range]{accent-color:var(--blue)}
+body .library-source,body .asset-section,body .template-sidebar,body .intent-preview,body .combo,body .batch-settings,body dialog{border-color:var(--line);border-radius:16px;box-shadow:var(--shadow)}
+body .template-sidebar,body .toolbar,body .canvas-status,body .intent-head{background:#fff;color:var(--text)}
+body .layout-presets,body .sun-controls,body .combo-text-panel,body .priority-strip,body .picker-categories,body .category-browser,body .batch-settings .global-text-toggle{background:#f8f8fa;border-color:var(--line);border-radius:10px}
+body .category-browser button,body .picker-categories button{border-color:#e2e2e7;background:#fff;color:#505057;border-radius:9px}
+body .category-browser button.active,body .picker-categories button.active{color:#b22331;background:#ffedef;border-color:#e9a5ac}
+body .category-browser button:hover,body .picker-categories button:hover{border-color:#d77983;background:#fff6f7}
+body #libraryPage .category-browser{display:flex;flex-wrap:wrap;gap:8px;padding:10px;min-height:56px;overflow:visible;align-items:center}
+body #libraryPage .category-browser button{min-height:42px;padding:9px 16px;font-size:12px;line-height:1.25;white-space:nowrap;flex:0 0 auto}
+body .asset div>span,body .pick>span:not(.qty-control){display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body .combo-switcher{background:rgba(255,255,255,.96);border-color:var(--line);border-radius:13px;box-shadow:0 3px 12px #00000005}
+body .combo-switcher button.active,body .combo.preview-active,body .pick.selected{border-color:#de8c95;box-shadow:0 0 0 1px #c92c3b12}
+body .combo-switcher button.active,body .pick.selected{background:#fff4f5}
+body .combo-switcher button b,body .combo-switcher button.active b,body .order-item>strong{color:var(--blue)}
+body .batch-settings{grid-template-columns:repeat(2,minmax(75px,1fr)) minmax(120px,2fr) minmax(145px,1fr)}
+body .batch-settings label,body .batch-settings input{min-width:0;max-width:100%}
+body .batch-settings .global-text-toggle{min-width:0}
+@media(max-width:1000px){body .batch-settings{grid-template-columns:repeat(2,minmax(0,1fr))}}
+body .combo-product-panel{border-color:var(--line);border-radius:10px}
+body .combo-product-panel>summary,body .combo-text-panel>summary{background:#fafafa;color:#505057}
+body .combo-product-panel[open]>summary{border-bottom-color:var(--line)}
+body summary{transition:background-color .18s ease;cursor:pointer}
+body summary:hover{background:#fff0f1}
+body .asset,body .pick,body .order-item{border-color:var(--line);border-radius:10px}
+body .asset:hover,body .pick:hover{border-color:#de8c95;box-shadow:0 3px 10px #00000008;transform:none}
+body .pick img,body .asset img{background-color:#f8f8fa}
+body .seg button.active{background:var(--blue-soft);color:var(--blue);box-shadow:inset 0 -2px var(--blue)}
+body .draw-type-options input:checked+span{background:var(--blue-soft);color:var(--blue);border-color:#e9a5ac}
+body .shadow-template-bar{background:#fff;border-color:var(--line)}
+body #applyShadowToAll{background:#fff0f1;color:#b22331;border-color:#f0c4c9}
+body .intent-canvas-wrap{background:#ededf0;border-radius:12px}
+body .intent-canvas-wrap canvas{box-shadow:none}
+body .batch-splitter::after,body .library-splitter::after{background:#c9c9cf!important}
+body .batch-splitter:hover::after,body .library-splitter:hover::after{background:var(--blue)!important}
+body dialog{box-shadow:0 20px 70px #00000020}
+body dialog::backdrop{background:#20202645;backdrop-filter:blur(5px)}
+body dialog[open]{animation:dialog-arrive .2s ease-out}
+body .page:not([hidden]){animation:page-arrive .18s ease-out}
+body #toast{background:#323236;border-radius:12px}
+@keyframes dialog-arrive{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes page-arrive{from{opacity:.6}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-transparency:reduce){body header,body .combo-switcher{background:#fff;backdrop-filter:none}body dialog::backdrop{backdrop-filter:none}}
