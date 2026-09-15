@@ -54,6 +54,21 @@ body dialog::backdrop{background:#20202645;backdrop-filter:blur(5px)}
 body dialog[open]{animation:dialog-arrive .2s ease-out}
 body .page:not([hidden]){animation:page-arrive .18s ease-out}
 body #toast{background:#323236;border-radius:12px}
+/* Interaction polish following Vercel Web Interface Guidelines. */
+body button,body summary,body .upload,body .pick{touch-action:manipulation;-webkit-tap-highlight-color:#c92c3b18}
+body .pick:focus-within,body .upload:focus-within{outline:2px solid var(--blue);outline-offset:3px}
+body .pick>span:not(.qty-control),body .asset div>span{font-size:12px;line-height:1.5;color:#353539}
+body .asset small{color:#707078;line-height:1.5}
+body .empty,body .template-pair-empty{color:#686870;background:#fafafa;border-color:#e2e2e7;line-height:1.6}
+body .intent-empty{color:#686870}
+body .combo-switcher button small{color:#65656e}
+body input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]),body textarea{background:#fafafa;transition:background-color .15s ease,border-color .15s ease}
+body input:focus-visible,body textarea:focus-visible{background:#fff}
+body dialog{max-height:calc(100dvh - 40px);overflow:auto;overscroll-behavior:contain}
+body .qty-control b,body .order-item>b{font-variant-numeric:tabular-nums}
+body .asset img,body .pick img{object-fit:contain;aspect-ratio:1}
+body .upload:hover{filter:brightness(.96)}
+body .order-item button:hover:not(:disabled){background:#fff0f1;border-color:#de8c95}
 @keyframes dialog-arrive{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
 @keyframes page-arrive{from{opacity:.6}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
