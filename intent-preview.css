@@ -1,5 +1,12 @@
 @import url("step-navigation.css");
 @import url("ui-refresh.css");
+.draw-type-options{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+.draw-type-options>span{margin-right:3px;color:var(--muted)}
+.toolbar .draw-type-options label{position:relative;display:block;cursor:pointer}
+.draw-type-options input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.draw-type-options label>span{display:block;padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;white-space:nowrap}
+.draw-type-options input:checked+span{color:#1d4ed8;background:#eaf0ff;border-color:#93b4f5;font-weight:700}
+.draw-type-options input:focus-visible+span{outline:2px solid #2563eb;outline-offset:2px}
 #templatePage{grid-template-columns:clamp(400px,28vw,560px) minmax(0,1fr)}
 .template-sidebar{min-width:0}
 .template-library-box{padding:11px}
