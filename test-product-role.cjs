@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync('app.js','utf8'),ctx={};vm.createContext(ctx);
+vm.runInContext(source.split(/\r?\n/).find(l=>l.startsWith('function productRole(')),ctx);
+for(const path of ['礼盒包包/图.png','GWP小样/图.jpg','系列/gWp套装/图.webp','00赠礼/图.png','主品/包包系列/图.png','main/系列00/图.png','主品\\GWP\\图.png'])assert.equal(ctx.productRole(path).type,'gift',path);
+for(const root of ['包包素材','2026-GWP','00'])assert.equal(ctx.productRole('系列/图.png',root).type,'gift');
+assert.equal(ctx.productRole('主品/粉底/图.png').type,'main');
+assert.equal(ctx.productRole('赠品/图.png').type,'gift');
+assert.equal(ctx.productRole('系列/GWP包包00.png'),null,'file names must not trigger classification');
+assert.equal(ctx.productRole('系列/图.png'),null);
+assert.deepEqual(Array.from(ctx.productRole('主品/GWP套装/粉底/图.png').categoryParts),['GWP套装','粉底']);
+assert(source.includes('productRole(r.relativePath,handle.name)'));
+console.log('PASS gift keywords, mixed case, nested and root folders, priority, categories, legacy aliases, filename exclusion');
