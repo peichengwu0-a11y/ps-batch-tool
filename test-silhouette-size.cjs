@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+const S=require('./silhouette-size.js');
+const alpha=Array.from({length:100},(_,i)=>i%10>=2&&i%10<=7?255:0);
+const shape=S.describe(alpha,10,10,.4);
+assert(S.similar(shape,S.describe(alpha,10,10,.42)));
+assert(!S.similar(shape,S.describe(alpha,10,10,.8)));
+assert(!S.similar(shape,S.describe(alpha.map(v=>255-v),10,10,.4)));
+assert.equal(S.describe(Array(100).fill(255),10,10,1),null);
+const item=(index,type,w,h)=>({index,type,w,h,x:20,y:30,rotation:15});
+const items=[item(1,'main',40,100),item(0,'main',80,200),item(2,'gift',20,50),item(3,'gift',40,100)];
+const cx=items[0].x+items[0].w/2,cy=items[0].y+items[0].h/2;
+assert.equal(S.synchronize(items,()=>shape),2);
+assert.equal(items[0].h,200);assert.equal(items[3].h,50);
+assert.equal(items[0].w/items[0].h,.4);assert.equal(items[0].rotation,15);
+assert.equal(items[0].x+items[0].w/2,cx);assert.equal(items[0].y+items[0].h/2,cy);
+assert.equal(S.synchronize(items,()=>null),0);
+// Ordinary preview/cache reads must not reset manual size edits.
+const source=fs.readFileSync('app.js','utf8');
+const start=source.indexOf('function buildIntentLayout(c){'),end=source.indexOf('function normalizeDuplicateGiftSizes',start);
+const layout={signature:'same',items:[{w:11,h:22}],silhouetteSizeApplied:true};
+const ctx={ensureComboOrder:()=>{},parseInstanceKey:()=>({type:'main',id:'a'}),state:{assets:{main:[{id:'a'}]}},intentLayoutSignature:()=>'same',normalizeDuplicateGiftSizes:()=>{throw new Error('unexpected resync');}};
+vm.createContext(ctx);vm.runInContext(source.slice(start,end),ctx);ctx.c={order:['a'],previewLayout:layout};
+assert.equal(vm.runInContext('buildIntentLayout(c)',ctx),layout);assert.equal(layout.items[0].h,22);
+console.log('PASS: role separation, priority reference, aspect/rotation/center preservation, conservative matching, manual edits retained');

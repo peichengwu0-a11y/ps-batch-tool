@@ -19,3 +19,8 @@
 .toolbar #templateDone + #hint {
   margin-left: 0;
 }
+.layout-view-switch{display:flex!important;flex-direction:row!important;gap:3px;padding:3px;background:#f1f1f3;border-radius:9px;margin-left:auto}
+.intent-head .layout-view-switch button{padding:6px 8px;font-size:12px;border:1px solid transparent;background:transparent;white-space:nowrap}
+.intent-head .layout-view-switch button.active{background:#fff;color:#c92840;border-color:#f1d3d8;box-shadow:0 1px 3px #0000000d}
+.layout-view-switch button:focus-visible{outline:2px solid #c92840;outline-offset:2px}
+.intent-head{flex-wrap:wrap}

@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const src=fs.readFileSync('app.js','utf8');
+const functions=['addCombo','layoutViewMode','setLayoutViewMode'].map(name=>src.split(/\r?\n/).find(l=>l.startsWith('function '+name+'('))).join('\n');
+const state={combos:[{id:'first',layoutViewMode:'oblique',layoutPresetByMode:{oblique:'test'}}],activeComboId:'first'};
+const ctx={state,crypto:require('crypto'),activeCombo:()=>state.combos.find(c=>c.id===state.activeComboId),defaultSun:()=>({}),ensureComboText:()=>({}),ensureSun:()=>({}),renderCombos:()=>{},pushGlobalHistory:()=>{},renderLayoutPresetOptions:()=>{}};
+vm.createContext(ctx);vm.runInContext(functions,ctx);
+vm.runInContext('addCombo()',ctx);assert.equal(state.combos[1].layoutViewMode,'oblique');
+vm.runInContext('addCombo()',ctx);assert.equal(state.combos[2].layoutViewMode,'oblique');
+vm.runInContext('setLayoutViewMode("front")',ctx);assert.equal(state.combos[2].layoutViewMode,'front');assert.equal(state.combos[0].layoutViewMode,'oblique');
+vm.runInContext('addCombo()',ctx);assert.equal(state.combos[3].layoutViewMode,'front');
+state.combos[0].name='first';state.combos[0].main=[];state.combos[0].gift=[];
+vm.runInContext('addCombo(state.combos[0])',ctx);assert.equal(state.combos[4].layoutViewMode,'oblique');
+assert.notEqual(state.combos[4].layoutPresetByMode,state.combos[0].layoutPresetByMode);
+console.log('PASS: new combos inherit current mode, manual override, copy inherits source, existing combos unchanged');

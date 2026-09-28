@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ctx={ProductGroups:require('./product-groups.js'),TemplateSlots:require('./template-slots.js'),SilhouetteSize:{descriptor:()=>null},state:{zones:{}},zoneBounds:()=>({w:1000,h:1000}),intentAssetRatio:a=>a.ratio,parseInstanceKey:key=>({id:key.split(':')[1]})};
+vm.createContext(ctx);vm.runInContext(fs.readFileSync('app.js','utf8').split(/\r?\n/).find(l=>l.startsWith('function assignItemsToSlots(')),ctx);
+const items=['a','b','a'].map((id,index)=>({key:`main:${id}:${index}`,type:'main',index,a:{ratio:.3}}));
+const slots=[0,.3,.6].map(x=>({x,y:0,w:.15,h:.5,rotation:12,custom:true}));
+const before=JSON.stringify(slots),result=ctx.assignItemsToSlots(items,slots,true);
+assert.deepEqual(Array.from(result,p=>p.item.key),['main:a:0','main:a:2','main:b:1']);
+assert.deepEqual(Array.from(result,p=>p.slotIndex),[0,1,2]);assert.equal(JSON.stringify(slots),before);
+assert.equal(JSON.stringify(ctx.assignItemsToSlots(items,slots,true)),JSON.stringify(result));
+console.log('PASS repeated mains adjacent in saved templates; slot geometry unchanged; deterministic');
